@@ -8,6 +8,7 @@ middleware, error handling, and logging configuration.
 import logging
 import sys
 from contextlib import asynccontextmanager
+from datetime import datetime
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,6 +17,7 @@ from fastapi.responses import JSONResponse
 from app.core.config import settings, create_directories
 from app.core.database_prod import startup_database, shutdown_database, init_database
 from app.core.chromadb_prod import startup_chromadb, shutdown_chromadb
+from app.core.startup_check import startup_check
 from app.api.endpoints import memory
 
 # Configure logging
@@ -44,6 +46,9 @@ async def lifespan(app: FastAPI):
     """
     # Startup
     logger.info("Starting Memory Pipeline API")
+
+    # Run startup checks first
+    startup_check()
 
     try:
         # Create necessary directories
@@ -248,6 +253,32 @@ async def root():
             "search": "/api/v1/memory/search"
         }
     }
+
+
+@app.get("/health")
+async def health():
+    """
+    Simple health endpoint.
+
+    Returns:
+        Dict: Basic health status with database check
+    """
+    try:
+        from app.core.database_prod import check_database_connection
+        db_status = check_database_connection()
+
+        return {
+            "status": "ok",
+            "database": db_status,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        return {
+            "status": "error",
+            "database": False,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
 
 
 @app.get("/api/v1/info")
