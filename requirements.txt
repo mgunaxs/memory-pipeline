@@ -1,0 +1,208 @@
+# ================================
+# Core API Framework
+# ================================
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+python-multipart>=0.0.6
+python-dotenv>=1.0.0
+
+# ================================
+# Production Database (PostgreSQL)
+# ================================
+# PostgreSQL database adapter
+psycopg2-binary>=2.9.7
+asyncpg>=0.28.0  # For async operations
+
+# SQLAlchemy with PostgreSQL optimizations
+sqlalchemy>=2.0.0,<2.1.0
+alembic>=1.12.0
+
+# Database connection pooling
+sqlalchemy-pool>=2.0.0
+
+# ================================
+# ChromaDB Cloud
+# ================================
+# ChromaDB client with cloud support
+chromadb>=1.5.0
+chromadb-client>=1.5.0
+
+# Embedding models
+sentence-transformers>=2.2.0
+transformers>=4.30.0
+torch>=2.0.0
+
+# ================================
+# LLM Integration
+# ================================
+# Google Gemini API
+google-generativeai>=0.8.0
+
+# Alternative LLM APIs
+openai>=1.3.0  # Optional
+anthropic>=0.8.0  # Optional
+
+# ================================
+# Production Utilities
+# ================================
+# HTTP client with retry logic
+httpx>=0.25.0
+tenacity>=8.2.0
+
+# Caching and session management
+redis>=5.0.0
+aioredis>=2.0.1
+
+# Background task processing
+celery>=5.3.0  # Optional for async tasks
+kombu>=5.3.0
+
+# ================================
+# Security & Authentication
+# ================================
+# JWT tokens
+PyJWT>=2.8.0
+cryptography>=41.0.0
+
+# Password hashing
+passlib[bcrypt]>=1.7.4
+
+# Rate limiting
+slowapi>=0.1.9
+
+# ================================
+# Monitoring & Observability
+# ================================
+# Metrics collection
+prometheus-client>=0.18.0
+
+# Structured logging
+structlog>=23.1.0
+
+# Error tracking (optional)
+sentry-sdk[fastapi]>=1.32.0
+
+# Performance monitoring
+py-spy>=0.3.14  # Optional profiling
+
+# ================================
+# Data Processing & Analytics
+# ================================
+# Data manipulation
+pandas>=2.0.0
+numpy>=1.24.0
+
+# JSON processing
+orjson>=3.9.0  # Faster JSON serialization
+
+# Date/time utilities
+python-dateutil>=2.8.2
+
+# ================================
+# AWS Integration (if using AWS)
+# ================================
+# AWS SDK
+boto3>=1.28.0
+botocore>=1.31.0
+
+# S3 file operations
+s3fs>=2023.6.0  # Optional
+
+# ================================
+# Testing & Development
+# ================================
+# Core testing framework
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.1
+
+# HTTP testing
+httpx>=0.25.0  # Also used for testing
+requests>=2.31.0
+
+# Database testing
+pytest-postgresql>=5.0.0
+factory-boy>=3.3.0  # Test data generation
+
+# Performance testing
+pytest-benchmark>=4.0.0
+
+# ================================
+# Code Quality & Linting
+# ================================
+# Code formatting
+black>=23.7.0
+isort>=5.12.0
+
+# Linting
+flake8>=6.0.0
+mypy>=1.5.0
+
+# Security scanning
+bandit>=1.7.5
+safety>=2.3.5
+
+# ================================
+# Documentation
+# ================================
+# API documentation
+mkdocs>=1.5.0
+mkdocs-material>=9.2.0
+
+# ================================
+# Production Server
+# ================================
+# WSGI server for production
+gunicorn>=21.2.0
+
+# Process management
+supervisor>=4.2.5  # Optional
+
+# ================================
+# Database Migrations & Management
+# ================================
+# Enhanced migration tools
+alembic-utils>=0.8.0
+
+# Database administration
+pgcli>=3.5.0  # PostgreSQL CLI
+
+# ================================
+# Machine Learning (Optional)
+# ================================
+# Enhanced embedding models
+optimum>=1.12.0
+onnx>=1.14.0  # For optimized inference
+
+# Text processing
+spacy>=3.6.0  # Optional for advanced NLP
+nltk>=3.8.1   # Optional for text analysis
+
+# ================================
+# Development Dependencies
+# ================================
+# Development server
+watchfiles>=0.20.0
+
+# Debugging
+ipdb>=0.13.13
+rich>=13.5.0  # Better console output
+
+# Environment management
+python-decouple>=3.8.0
+
+# ================================
+# Optional Production Enhancements
+# ================================
+# Message queuing (if needed)
+# rabbitmq-server  # System package
+# pika>=1.3.0     # RabbitMQ client
+
+# Load balancing health checks
+# health-check>=1.0.0
+
+# Container orchestration helpers
+# kubernetes>=27.2.0  # If using K8s

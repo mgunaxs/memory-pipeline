@@ -1,0 +1,33 @@
+# Core API Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+python-multipart>=0.0.6
+python-dotenv>=1.0.0
+
+# Database
+psycopg2-binary>=2.9.7
+asyncpg>=0.28.0
+sqlalchemy>=2.0.0,<2.1.0
+alembic>=1.12.0
+
+# Local ChromaDB
+chromadb>=0.4.0
+
+# Embedding models
+sentence-transformers>=2.2.0
+
+# LLM Integration
+google-generativeai>=0.8.0
+
+# Utilities
+httpx>=0.25.0
+tenacity>=8.2.0
+numpy>=1.24.0,<2.0.0
+pandas>=2.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+requests>=2.31.0
