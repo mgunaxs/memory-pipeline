@@ -35,10 +35,13 @@ class User(Base):
     __tablename__ = "users"
     __table_args__ = {'extend_existing': True}
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(String(255), unique=True, nullable=False, index=True)
+    user_id = Column(String(255), primary_key=True, nullable=False, index=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    settings = Column(JSON, default=dict)
+    is_active = Column(Boolean, default=True, nullable=False)
+    total_memories = Column(Integer, default=0, nullable=False)
+    last_activity = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
     memories = relationship("Memory", back_populates="user", cascade="all, delete-orphan")

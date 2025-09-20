@@ -476,7 +476,12 @@ def execute_raw_sql(sql: str, params: Optional[Dict] = None) -> Any:
             else:
                 result = connection.execute(text(sql))
 
-            return result.fetchall()
+            # Handle different types of SQL operations
+            if result.returns_rows:
+                return result.fetchall()
+            else:
+                # For INSERT, UPDATE, DELETE operations
+                return result.rowcount
 
     except Exception as e:
         logger.error(f"Raw SQL execution failed: {e}")

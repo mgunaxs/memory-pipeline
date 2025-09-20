@@ -173,6 +173,10 @@ class Settings(BaseSettings):
         default=1000,
         description="Maximum number of embeddings to cache"
     )
+    chroma_persist_directory: str = Field(
+        default="./data/chroma",
+        description="Local directory for ChromaDB persistence (legacy)"
+    )
 
     class Config:
         """Pydantic configuration."""
