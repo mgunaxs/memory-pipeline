@@ -169,7 +169,7 @@ def handle_gemini_errors(func: Callable) -> Callable:
 
 
 @retry(
-    stop=stop_after_attempt(settings.max_retries),
+    stop=stop_after_attempt(settings.gemini_max_retries),
     wait=wait_exponential(multiplier=1, min=2, max=30),
     retry=retry_if_exception_type(RateLimitError),
     reraise=True

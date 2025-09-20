@@ -44,12 +44,7 @@ def get_database_config() -> Dict[str, Any]:
         'echo': settings.log_level == "DEBUG",
         'echo_pool': settings.log_level == "DEBUG",
         'connect_args': {
-            'statement_timeout': getattr(settings, 'db_statement_timeout', 30000),
-            'connect_timeout': getattr(settings, 'db_connect_timeout', 10),
-            'server_settings': {
-                'jit': 'off',  # Disable JIT for predictable performance
-                'application_name': 'memory_pipeline'
-            }
+            'connect_timeout': getattr(settings, 'db_connect_timeout', 10)
         }
     }
 
@@ -265,7 +260,7 @@ async def check_async_database_connection() -> bool:
     try:
         async with async_engine.connect() as connection:
             result = await connection.execute(text("SELECT 1"))
-            await result.fetchone()
+            row = await result.fetchone()
         return True
 
     except Exception as e:
@@ -468,7 +463,7 @@ def execute_raw_sql(sql: str, params: Optional[Dict] = None) -> Any:
 
     Args:
         sql: SQL query string
-        params: Query parameters
+        params: Query parameters (dictionary format)
 
     Returns:
         Query result
@@ -476,6 +471,7 @@ def execute_raw_sql(sql: str, params: Optional[Dict] = None) -> Any:
     try:
         with engine.connect() as connection:
             if params:
+                # Use named parameters for PostgreSQL
                 result = connection.execute(text(sql), params)
             else:
                 result = connection.execute(text(sql))
@@ -484,6 +480,8 @@ def execute_raw_sql(sql: str, params: Optional[Dict] = None) -> Any:
 
     except Exception as e:
         logger.error(f"Raw SQL execution failed: {e}")
+        logger.error(f"SQL: {sql}")
+        logger.error(f"Params: {params}")
         raise
 
 async def execute_async_raw_sql(sql: str, params: Optional[Dict] = None) -> Any:

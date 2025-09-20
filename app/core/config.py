@@ -104,6 +104,10 @@ class Settings(BaseSettings):
         default=2000,
         description="Maximum content length"
     )
+    max_text_length: int = Field(
+        default=5000,
+        description="Maximum text length for memory extraction"
+    )
     retrieval_timeout_ms: int = Field(
         default=5000,
         description="Retrieval timeout in milliseconds"
@@ -124,6 +128,12 @@ class Settings(BaseSettings):
     rate_limit_burst: int = Field(
         default=10,
         description="Rate limit burst"
+    )
+
+    # CORS settings
+    cors_origins: str = Field(
+        default="http://localhost:3000,http://localhost:8080",
+        description="Comma-separated list of allowed CORS origins"
     )
 
     # ================================

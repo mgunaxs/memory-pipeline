@@ -201,15 +201,17 @@ Respond with only the JSON output, no additional text."""
         """
         start_time = time.time()
 
-        # Validate input
+        # Validate and sanitize input
+        from app.utils.security import sanitize_memory_content, validate_user_id, validate_message_id
+
         if not text or not text.strip():
             raise ValueError("Text cannot be empty")
 
-        if len(text) > settings.max_text_length:
-            raise ValueError(f"Text too long. Maximum {settings.max_text_length} characters")
-
-        # Clean text
-        text = text.strip()
+        # Sanitize inputs
+        text = sanitize_memory_content(text)
+        user_id = validate_user_id(user_id)
+        if source_message_id:
+            source_message_id = validate_message_id(source_message_id)
         logger.info(f"Extracting memories for user {user_id} from {len(text)} characters")
 
         try:
@@ -340,7 +342,8 @@ Respond with only the JSON output, no additional text."""
                     confidence = 0.5
 
                 # Filter out low-confidence memories
-                if confidence < settings.min_confidence_threshold:
+                min_confidence = getattr(settings, 'min_confidence_threshold', settings.min_confidence_score)
+                if confidence < min_confidence:
                     logger.debug(f"Skipping low-confidence memory: {confidence}")
                     continue
 

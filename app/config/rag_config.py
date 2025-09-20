@@ -315,3 +315,35 @@ def should_include_memory(
         return False
 
     return True
+
+
+def get_rag_strategy(context: str) -> dict:
+    """
+    Get RAG strategy configuration for a given context.
+
+    Args:
+        context: Context name (e.g., 'morning_checkin', 'meal_suggestion')
+
+    Returns:
+        dict: Strategy configuration with max_memories and min_relevance
+    """
+    try:
+        context_type = ContextType(context)
+        strategy = get_retrieval_strategy(context_type)
+        return {
+            'max_memories': strategy.max_memories,
+            'min_relevance': strategy.min_relevance,
+            'time_window_hours': strategy.time_window_hours,
+            'temporal_boost': strategy.temporal_boost,
+            'importance_weight': strategy.importance_weight
+        }
+    except ValueError:
+        # Return default strategy for unknown context
+        default_strategy = RETRIEVAL_STRATEGIES[ContextType.GENERAL_CHAT]
+        return {
+            'max_memories': default_strategy.max_memories,
+            'min_relevance': default_strategy.min_relevance,
+            'time_window_hours': default_strategy.time_window_hours,
+            'temporal_boost': default_strategy.temporal_boost,
+            'importance_weight': default_strategy.importance_weight
+        }

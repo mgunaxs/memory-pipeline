@@ -74,9 +74,12 @@ Thumbs.db
 
 # Memory Pipeline specific
 data/
+logs/
 *.log
 *.db
 embedding_cache.pkl
+VERIFICATION_REPORT.md
+verify_pipeline.py
 
 # Secrets and config
 .env
@@ -85,3 +88,7 @@ embedding_cache.pkl
 # Temporary files
 *.tmp
 *.temp
+
+# Build and setup files
+set_python312_default.bat
+setup/

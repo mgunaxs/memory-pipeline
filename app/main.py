@@ -92,14 +92,45 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Add CORS middleware
+# Add CORS middleware with secure configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=settings.cors_origins.split(","),
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
 )
+
+
+@app.middleware("http")
+async def security_headers_middleware(request: Request, call_next):
+    """Add security headers to all responses."""
+    response = await call_next(request)
+
+    # Security headers
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+
+    return response
+
+
+@app.middleware("http")
+async def request_size_limit_middleware(request: Request, call_next):
+    """Limit request body size to prevent DoS attacks."""
+    MAX_REQUEST_SIZE = 10 * 1024 * 1024  # 10MB
+
+    if request.headers.get("content-length"):
+        content_length = int(request.headers["content-length"])
+        if content_length > MAX_REQUEST_SIZE:
+            return JSONResponse(
+                status_code=413,
+                content={"error": "Request too large", "max_size": "10MB"}
+            )
+
+    return await call_next(request)
 
 
 @app.middleware("http")
